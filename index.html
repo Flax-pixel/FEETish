@@ -289,7 +289,7 @@
       var win = document.createElement('div');
       win.className='win';
       var steps = state.chain.length-1;
-      win.innerHTML = '<h2>Reached FEET</h2><p>'+steps+' try'+(steps===1?'':'s')+' to get there.</p>';
+      win.innerHTML = '<h2>Reached FEET</h2><p>'+steps+' tr'+(steps===1?'y':'ies')+' to get there.</p>';
       board.insertBefore(win, inputRow);
     } else if(state.failed){
       inputRow.style.display='none';
