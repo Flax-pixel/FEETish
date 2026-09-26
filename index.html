@@ -8,9 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#14261F; --surface:#1E332A; --surface2:#25402F;
-    --ink:#F1ECDD; --ink-dim:#B9C4B7;
-    --amber:#D9A62E; --good:#6FA97A; --bad:#B65C3F;
+    --bg:#0F1E18; --bg-2:#122820; --surface:#182922; --surface2:#213A2F; --surface3:#2A4839;
+    --ink:#F3EFE2; --ink-dim:#93A79A; --ink-faint:#5F7568;
+    --amber:#E3A83B; --amber-ink:#241705; --good:#7FB88A; --bad:#DD7A54; --bad-bg:#3A231A;
     --serif:'Fraunces', serif; --sans:'Inter', sans-serif; --mono:'JetBrains Mono', monospace;
     box-sizing:border-box;
     padding-top: env(safe-area-inset-top, 0px);
@@ -18,60 +18,96 @@
   }
   @media (prefers-color-scheme: light){
     :root:not([data-theme="dark"]){
-      --bg:#EFEAD9; --surface:#E1DAC4; --surface2:#D3C9AC;
-      --ink:#20301F; --ink-dim:#57604F;
+      --bg:#F2ECDA; --bg-2:#ECE4CC; --surface:#E4DABE; --surface2:#D8CBA6; --surface3:#CBBC91;
+      --ink:#20301F; --ink-dim:#5C6B54; --ink-faint:#8A9581;
+      --bad-bg:#F0DCCF;
     }
   }
-  :root[data-theme="dark"]{ --bg:#14261F; --surface:#1E332A; --surface2:#25402F; --ink:#F1ECDD; --ink-dim:#B9C4B7; }
+  :root[data-theme="dark"]{ --bg:#0F1E18; --bg-2:#122820; --surface:#182922; --surface2:#213A2F; --ink:#F3EFE2; --ink-dim:#93A79A; }
   *{margin:0;box-sizing:border-box;}
   html{scroll-padding-top: env(safe-area-inset-top, 0px);}
   html,body{height:100%;}
   body{
-    background:var(--bg); color:var(--ink); font-family:var(--sans);
-    min-height:100%; display:flex; justify-content:center; padding:32px 16px 48px;
+    background: radial-gradient(ellipse 900px 500px at 50% -10%, var(--bg-2), var(--bg) 65%);
+    color:var(--ink); font-family:var(--sans);
+    min-height:100%; display:flex; justify-content:center; padding:36px 16px 56px;
     position:relative; overflow-x:hidden;
   }
   .wrap{width:100%; max-width:440px; position:relative; z-index:2;}
-  header{text-align:center; margin-bottom:22px;}
+  header{text-align:center; margin-bottom:20px;}
+  .eyebrow{ font-size:1.6rem; line-height:1; margin-bottom:6px; }
   h1{
-    font-family:var(--serif); font-weight:700; font-size:2.1rem; font-style:italic;
-    letter-spacing:0.2px;
+    font-family:var(--serif); font-weight:700; font-size:2.4rem; font-style:italic;
+    letter-spacing:0.2px; line-height:1.1;
   }
-  .tagline{color:var(--ink-dim); font-size:0.92rem; margin-top:4px; line-height:1.5;}
-  .rule{color:var(--ink-dim); font-size:0.8rem; margin-top:12px; line-height:1.6; border-top:1px solid var(--surface2); padding-top:12px;}
-  .board{ background:var(--surface); border-radius:14px; padding:20px 18px; position:relative; z-index:2;}
-  .rung{ display:flex; align-items:center; gap:10px; padding:9px 0; }
-  .rung .step-no{ width:20px; text-align:right; color:var(--ink-dim); font-size:0.78rem; font-family:var(--mono); flex-shrink:0;}
+  .byline{ font-weight:600; font-size:0.72rem; letter-spacing:2px; color:var(--ink-dim); margin-top:5px; }
+  .tagline{color:var(--ink-dim); font-size:0.95rem; margin-top:10px; line-height:1.5;}
+
+  .howto{
+    background:var(--surface); border-radius:14px; margin:16px 0; overflow:hidden;
+    border:1px solid var(--surface2);
+  }
+  .howto summary{
+    cursor:pointer; list-style:none; padding:13px 16px; display:flex;
+    align-items:center; justify-content:space-between; font-weight:600; font-size:0.9rem;
+  }
+  .howto summary::-webkit-details-marker{ display:none; }
+  .howto summary .chev{ color:var(--ink-dim); transition:transform 0.2s ease; font-size:0.8rem; }
+  .howto[open] summary .chev{ transform:rotate(180deg); }
+  .howto-body{ padding:2px 16px 16px; color:var(--ink-dim); font-size:0.85rem; line-height:1.65; }
+  .howto-body ul{ padding-left:18px; margin:8px 0 14px; }
+  .howto-body li{ margin-bottom:5px; }
+  .example{ display:flex; flex-direction:column; gap:6px; margin:10px 0 4px; }
+  .example-row{ display:flex; align-items:center; gap:10px; }
+  .example-row .tiles{ display:flex; gap:5px; }
+  .example .tile{ width:32px; height:36px; font-size:0.95rem; }
+  .example-note{ color:var(--ink-faint); font-size:0.78rem; }
+
+  .board{
+    background:var(--surface); border-radius:16px; padding:20px 18px;
+    position:relative; z-index:2; border:1px solid var(--surface2);
+    box-shadow: 0 12px 30px -16px rgba(0,0,0,0.55);
+  }
+  .rung{ display:flex; align-items:center; gap:10px; padding:7px 0; }
+  .rung .step-no{ width:38px; text-align:right; color:var(--ink-faint); font-size:0.72rem; font-family:var(--mono); flex-shrink:0;}
   .tiles{ display:flex; gap:6px; }
   .tile{
-    width:40px; height:44px; border-radius:8px; background:var(--surface2);
+    width:42px; height:46px; border-radius:9px; background:var(--surface2);
     display:flex; align-items:center; justify-content:center;
-    font-family:var(--mono); font-weight:700; font-size:1.15rem; letter-spacing:0.5px;
-    color:var(--ink); text-transform:uppercase;
+    font-family:var(--mono); font-weight:700; font-size:1.2rem; letter-spacing:0.5px;
+    color:var(--ink); text-transform:uppercase; border:1px solid transparent;
   }
-  .rung.target .tile{ background:var(--amber); color:#1A1206; }
-  .connector{ text-align:center; color:var(--ink-dim); font-size:0.75rem; padding:2px 0 2px 30px; font-family:var(--mono);}
-  .input-row{ display:flex; gap:10px; margin-top:14px; }
+  .tile.diff{ border-color:var(--amber); color:var(--amber); }
+  .rung.target .tile{ background:var(--amber); color:var(--amber-ink); border-color:transparent; }
+  .rung.enter{ animation: rise 0.32s ease-out; }
+  @keyframes rise{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
+  .connector{ text-align:center; color:var(--ink-faint); font-size:0.75rem; padding:1px 0 1px 38px; font-family:var(--mono);}
+  .input-row{ display:flex; gap:10px; margin-top:16px; }
   input[type=text]{
-    flex:1; background:var(--surface2); border:1px solid transparent; border-radius:8px;
-    color:var(--ink); font-family:var(--mono); font-size:1.1rem; letter-spacing:2px;
-    text-transform:uppercase; padding:10px 12px; text-align:center;
+    flex:1; background:var(--surface2); border:1.5px solid transparent; border-radius:9px;
+    color:var(--ink); font-family:var(--mono); font-size:1.15rem; letter-spacing:3px;
+    text-transform:uppercase; padding:11px 12px; text-align:center;
+    transition:border-color 0.15s ease;
   }
   input[type=text]:focus{ outline:none; border-color:var(--amber); }
   button{
-    background:var(--amber); color:#1A1206; border:none; border-radius:8px;
-    font-family:var(--sans); font-weight:600; font-size:0.95rem; padding:0 18px; cursor:pointer;
+    background:var(--amber); color:var(--amber-ink); border:none; border-radius:9px;
+    font-family:var(--sans); font-weight:700; font-size:0.95rem; padding:0 20px; cursor:pointer;
+    transition:filter 0.15s ease;
   }
+  button:hover{ filter:brightness(1.08); }
+  button:active{ filter:brightness(0.95); }
   button:disabled{ opacity:0.4; cursor:default; }
-  .msg{ min-height:20px; font-size:0.85rem; margin-top:8px; text-align:center; }
-  .msg.bad{ color:var(--bad); } .msg.good{ color:var(--good); }
-  .stats{ display:flex; justify-content:space-between; margin-top:20px; padding-top:16px; border-top:1px solid var(--surface2); font-size:0.85rem; color:var(--ink-dim); }
+  .msg{ min-height:20px; font-size:0.82rem; margin-top:10px; text-align:center; font-weight:600; }
+  .msg.bad{ color:var(--bad); background:var(--bad-bg); border-radius:8px; padding:6px 10px; }
+  .msg.good{ color:var(--good); }
+  .stats{ display:flex; justify-content:space-between; margin-top:20px; padding-top:16px; border-top:1px solid var(--surface2); font-size:0.83rem; color:var(--ink-dim); }
   .stats b{ color:var(--ink); font-family:var(--mono); }
-  .win{ text-align:center; padding:18px 6px 4px; }
-  .win h2{ font-family:var(--serif); font-style:italic; font-size:1.4rem; margin-bottom:6px; }
+  .win{ text-align:center; padding:20px 6px 4px; }
+  .win h2{ font-family:var(--serif); font-style:italic; font-size:1.5rem; margin-bottom:6px; }
   .win p{ color:var(--ink-dim); font-size:0.88rem; }
-  .lose h2{ color:var(--bad); }
-  footer{ text-align:center; color:var(--ink-dim); font-size:0.75rem; margin-top:18px; position:relative; z-index:2;}
+  .lose h2{ color:var(--bad); font-family:var(--sans); font-style:normal; font-size:1.1rem; letter-spacing:0.3px; }
+  footer{ text-align:center; color:var(--ink-faint); font-size:0.75rem; margin-top:20px; position:relative; z-index:2;}
 
   #footRain{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:1; }
   .falling-foot{
@@ -84,6 +120,7 @@
   }
   @media (prefers-reduced-motion: reduce){
     .falling-foot{ animation-duration: 0.01s !important; }
+    .rung.enter{ animation:none; }
   }
 </style>
 </head>
@@ -91,11 +128,35 @@
 <div id="footRain"></div>
 <div class="wrap">
   <header>
+    <div class="eyebrow">🦶</div>
     <h1>Feetish</h1>
-    <div style="text-align:center; font-weight:700; letter-spacing:1px; margin-top:-6px; margin-bottom:8px;">UDAY TYAGI</div>
     <div class="tagline">Get today's word down to <strong>FEET</strong>, one letter at a time.</div>
-    <div class="rule" id="ruleText">Each new word must be real and differ from the last by exactly one letter.</div>
   </header>
+
+  <details class="howto">
+    <summary>How to play <span class="chev">▾</span></summary>
+    <div class="howto-body">
+      <ul>
+        <li>Each guess must be a real 4-letter word.</li>
+        <li>It must differ from your last word by exactly <strong>one letter</strong> — same length, same positions, one swap.</li>
+        <li>Keep changing one letter at a time until you spell <strong>FEET</strong>.</li>
+        <li id="triesRule">Your try limit is the shortest possible path for today's word, plus 5 spares.</li>
+      </ul>
+      <div class="example">
+        <div class="example-row">
+          <div class="tiles">
+            <div class="tile">F</div><div class="tile">E</div><div class="tile">E</div><div class="tile">D</div>
+          </div>
+        </div>
+        <div class="example-row">
+          <div class="tiles">
+            <div class="tile diff">F</div><div class="tile diff">E</div><div class="tile diff">E</div><div class="tile diff" style="border-color:var(--amber); color:var(--amber);">T</div>
+          </div>
+        </div>
+      </div>
+      <div class="example-note">FEED → FEET changes only the last letter. That's one valid step.</div>
+    </div>
+  </details>
 
   <div class="board" id="board">
     <!-- rungs injected here -->
@@ -172,9 +233,8 @@
   }
   var PAR = shortestPathLength(START);
   var MAX_TRIES = (PAR === null ? 6 : PAR) + EXTRA_TRIES;
-  document.getElementById('ruleText').textContent =
-    'Each new word must be real and differ from the last by exactly one letter. ' +
-    'Best possible path is ' + PAR + ' steps — you have ' + MAX_TRIES + ' tries.';
+  document.getElementById('triesRule').textContent =
+    'Today\u2019s shortest path is ' + PAR + ' steps, so you get ' + MAX_TRIES + ' tries total.';
 
   // ---- storage ----
   function loadState(){
@@ -207,14 +267,16 @@
         board.insertBefore(c, inputRow);
       }
       var row = document.createElement('div');
-      row.className='rung' + (word===TARGET ? ' target' : '');
+      var isLast = idx === state.chain.length - 1;
+      row.className='rung' + (word===TARGET ? ' target' : '') + (isLast && idx>0 ? ' enter' : '');
       var num = document.createElement('div');
       num.className='step-no'; num.textContent = idx===0 ? 'start' : idx;
       var tiles = document.createElement('div');
       tiles.className='tiles';
+      var prev = idx>0 ? state.chain[idx-1] : null;
       for(var i=0;i<4;i++){
         var t=document.createElement('div');
-        t.className='tile';
+        t.className='tile' + ((prev && prev[i]!==word[i] && word!==TARGET) ? ' diff' : '');
         t.textContent = word[i];
         tiles.appendChild(t);
       }
